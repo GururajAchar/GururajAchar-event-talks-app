@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Talks Event</title>
+    <style>body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #2c3e50;
+    color: #ffffff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+header p {
+    margin: 0.5rem 0 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.sidebar {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    margin: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    align-self: flex-start;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 1.4rem;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.2rem;
+}
+
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.category-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.category-button:hover, .category-button.active {
+    background-color: #2980b9;
+}
+
+#searchInput {
+    width: calc(100% - 22px);
+    padding: 0.75rem;
+    margin-bottom: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+#resetFilterButton {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#resetFilterButton:hover {
+    background-color: #c0392b;
+}
+
+#schedule {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem;
+    flex-grow: 1;
+}
+
+.talk-card, .lunch-break {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    border-left: 5px solid;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.talk-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.talk-card.filtered {
+    display: none;
+}
+
+.talk-card.category-Development { border-left-color: #3498db; }
+.talk-card.category-AI { border-left-color: #9b59b6; }
+.talk-card.category-Cloud { border-left-color: #1abc9c; }
+.talk-card.category-Frontend { border-left-color: #f1c40f; }
+.talk-card.category-Backend { border-left-color: #e67e22; }
+.talk-card.category-Data { border-left-color: #34495e; }
+.talk-card.category-Design { border-left-color: #e74c3c; }
+
+.lunch-break {
+    background-color: #ecf0f1;
+    border-left-color: #7f8c8d;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.talk-time {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.talk-title {
+    font-size: 1.7rem;
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+}
+
+.talk-speakers {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.talk-category {
+    display: inline-block;
+    background-color: #bdc3c7;
+    color: #fff;
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.talk-description {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 1rem;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    #app {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        flex: 0 0 250px;
+        margin: 1rem 0 1rem 1rem;
+    }
+
+    #schedule {
+        flex: 1;
+        padding: 1rem 1rem 1rem 0;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    #schedule {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
+</style>
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>Tech Talks 2026</h1>
+            <p>A day of insightful technical discussions</p>
+        </header>
+
+        <aside class="sidebar">
+            <h2>Filter by Category</h2>
+            <div class="category-filters">
+                <!-- Category buttons will be injected here by JavaScript -->
+            </div>
+            <input type="text" id="searchInput" placeholder="Search by category keyword...">
+            <button id="resetFilterButton">Reset Filter</button>
+        </aside>
+
+        <main id="schedule">
+            <!-- Schedule will be dynamically loaded here by JavaScript -->
+        </main>
+    </div>
+
+    <script>document.addEventListener('DOMContentLoaded', () => {
+    const talkData = [
+        {
+            id: 'talk1',
+            title: 'The Future of WebAssembly in Cloud',
+            speakers: ['Dr. Anya Sharma'],
+            category: ['Cloud', 'WebAssembly', 'Performance'],
+            duration: 60,
+            description: 'Explore the exciting advancements of WebAssembly beyond the browser, focusing on its role in serverless functions and edge computing within cloud environments. We will cover real-world use cases and future predictions.'
+        },
+        {
+            id: 'talk2',
+            title: 'Demystifying AI in Frontend Development',
+            speakers: ['Ben Carter', 'Sophia Lee'],
+            category: ['AI', 'Frontend', 'JavaScript'],
+            duration: 60,
+            description: 'Dive into practical applications of Artificial Intelligence that are revolutionizing frontend development. Learn how AI-powered tools and techniques can enhance user experience, automate design processes, and personalize content delivery.'
+        },
+        {
+            id: 'talk3',
+            title: 'Scaling Microservices with Kubernetes: Best Practices',
+            speakers: ['Carlos Rodriguez'],
+            category: ['Development', 'Cloud', 'Kubernetes'],
+            duration: 60,
+            description: 'This session provides an in-depth look at scaling microservices effectively using Kubernetes. We will cover architectural patterns, deployment strategies, and troubleshooting tips to ensure high availability and performance.'
+        },
+        {
+            id: 'talk4',
+            title: 'Data Mesh vs. Data Lakehouse: Choosing the Right Architecture',
+            speakers: ['Emily Chen'],
+            category: ['Data', 'Architecture'],
+            duration: 60,
+            description: 'Understand the fundamental differences and trade-offs between Data Mesh and Data Lakehouse architectures. This talk will guide you through selecting the optimal data strategy for your organization's needs and challenges.'
+        },
+        {
+            id: 'talk5',
+            title: 'Advanced State Management in React with XState',
+            speakers: ['David Kim'],
+            category: ['Frontend', 'JavaScript', 'Development'],
+            duration: 60,
+            description: 'Master complex application states in React using XState, a powerful state machine library. Learn how to model intricate user flows, manage async operations, and build resilient and predictable UIs with confidence.'
+        },
+        {
+            id: 'talk6',
+            title: 'Ethical AI: Building Responsible Machine Learning Systems',
+            speakers: ['Grace Hopper', 'Alan Turing'],
+            category: ['AI', 'Ethics', 'Data'],
+            duration: 60,
+            description: 'A critical discussion on the principles and practices of building ethical AI systems. We will explore bias detection, fairness metrics, interpretability, and the societal impact of artificial intelligence.'
+        }
+    ];
+
+    const scheduleContainer = document.getElementById('schedule');
+    const searchInput = document.getElementById('searchInput');
+    const categoryFiltersContainer = document.querySelector('.category-filters');
+    const resetFilterButton = document.getElementById('resetFilterButton');
+
+    let currentFilters = [];
+
+    // Helper to format time
+    const formatTime = (date) => date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+    // Function to generate the full schedule with calculated times
+    const generateSchedule = (talks) => {
+        let currentTime = new Date();
+        currentTime.setHours(10, 0, 0, 0); // Event starts at 10:00 AM
+
+        const fullSchedule = [];
+
+        talks.forEach((talk, index) => {
+            // Add talk to schedule
+            talk.startTime = formatTime(currentTime);
+            currentTime.setMinutes(currentTime.getMinutes() + talk.duration);
+            talk.endTime = formatTime(currentTime);
+            fullSchedule.push(talk);
+
+            // Add transition after each talk except the last one
+            if (index < talks.length - 1) {
+                currentTime.setMinutes(currentTime.getMinutes() + 10); // 10 min transition
+            }
+
+            // Insert lunch break after the 3rd talk
+            if (index === 2) {
+                const lunchStartTime = new Date(currentTime);
+                currentTime.setMinutes(currentTime.getMinutes() + 60); // 1 hour lunch
+                fullSchedule.push({
+                    id: 'lunch',
+                    title: 'Lunch Break',
+                    startTime: formatTime(lunchStartTime),
+                    endTime: formatTime(currentTime),
+                    isBreak: true
+                });
+            }
+        });
+        return fullSchedule;
+    };
+
+    const fullSchedule = generateSchedule(talkData);
+
+    // Function to render the schedule
+    const renderSchedule = (scheduleToRender) => {
+        scheduleContainer.innerHTML = ''; // Clear previous schedule
+        scheduleToRender.forEach(item => {
+            if (item.isBreak) {
+                const lunchDiv = document.createElement('div');
+                lunchDiv.classList.add('lunch-break');
+                lunchDiv.innerHTML = `
+                    <span>${item.startTime} - ${item.endTime}</span>
+                    <h3>${item.title}</h3>
+                `;
+                scheduleContainer.appendChild(lunchDiv);
+            } else {
+                const talkDiv = document.createElement('div');
+                talkDiv.classList.add('talk-card');
+                talkDiv.id = item.id;
+                item.category.forEach(cat => talkDiv.classList.add(`category-${cat.replace(/\s/g, '')}`)); // Add category class
+                talkDiv.innerHTML = `
+                    <span class="talk-time">${item.startTime} - ${item.endTime}</span>
+                    <h3 class="talk-title">${item.title}</h3>
+                    <p class="talk-speakers">${item.speakers.join(' and ')}</p>
+                    <div class="talk-categories">
+                        ${item.category.map(cat => `<span class="talk-category">${cat}</span>`).join('')}
+                    </div>
+                    <p class="talk-description">${item.description}</p>
+                `;
+                scheduleContainer.appendChild(talkDiv);
+            }
+        });
+    };
+
+    // Function to get unique categories and render filter buttons
+    const renderCategoryFilters = () => {
+        const allCategories = new Set();
+        talkData.forEach(talk => {
+            talk.category.forEach(cat => allCategories.add(cat));
+        });
+
+        categoryFiltersContainer.innerHTML = '';
+        allCategories.forEach(category => {
+            const button = document.createElement('button');
+            button.classList.add('category-button');
+            button.textContent = category;
+            button.dataset.category = category;
+            button.addEventListener('click', () => {
+                toggleCategoryFilter(category);
+                applyFilters();
+            });
+            categoryFiltersContainer.appendChild(button);
+        });
+    };
+
+    const toggleCategoryFilter = (category) => {
+        const index = currentFilters.indexOf(category);
+        if (index > -1) {
+            currentFilters.splice(index, 1); // Remove filter
+            document.querySelector(`.category-button[data-category="${category}"]`).classList.remove('active');
+        } else {
+            currentFilters.push(category); // Add filter
+            document.querySelector(`.category-button[data-category="${category}"]`).classList.add('active');
+        }
+    };
+
+    const applyFilters = () => {
+        const searchTerm = searchInput.value.toLowerCase();
+        const talkCards = document.querySelectorAll('.talk-card');
+
+        talkCards.forEach(card => {
+            const categories = Array.from(card.querySelectorAll('.talk-category')).map(span => span.textContent.toLowerCase());
+            const matchesCategoryFilter = currentFilters.length === 0 || currentFilters.some(filter => categories.includes(filter.toLowerCase()));
+            const matchesSearchTerm = searchTerm === '' || categories.some(cat => cat.includes(searchTerm));
+
+            if (matchesCategoryFilter && matchesSearchTerm) {
+                card.classList.remove('filtered');
+            } else {
+                card.classList.add('filtered');
+            }
+        });
+    };
+
+    // Event Listeners
+    searchInput.addEventListener('keyup', applyFilters);
+    resetFilterButton.addEventListener('click', () => {
+        searchInput.value = '';
+        currentFilters = [];
+        document.querySelectorAll('.category-button').forEach(btn => btn.classList.remove('active'));
+        applyFilters();
+    });
+
+    // Initial render
+    renderSchedule(fullSchedule);
+    renderCategoryFilters();
+});
+</script>
+</body>
+</html>

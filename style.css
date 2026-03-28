@@ -1,0 +1,212 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f7f6;
+    color: #333;
+    line-height: 1.6;
+}
+
+#app {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+header {
+    background-color: #2c3e50;
+    color: #ffffff;
+    padding: 1.5rem 1rem;
+    text-align: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+header h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+header p {
+    margin: 0.5rem 0 0;
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.sidebar {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    margin: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    align-self: flex-start;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 1.4rem;
+    border-bottom: 2px solid #e0e0e0;
+    padding-bottom: 0.8rem;
+    margin-bottom: 1.2rem;
+}
+
+.category-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.category-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.category-button:hover, .category-button.active {
+    background-color: #2980b9;
+}
+
+#searchInput {
+    width: calc(100% - 22px);
+    padding: 0.75rem;
+    margin-bottom: 0.8rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+#resetFilterButton {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.2rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+#resetFilterButton:hover {
+    background-color: #c0392b;
+}
+
+#schedule {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding: 1rem;
+    flex-grow: 1;
+}
+
+.talk-card, .lunch-break {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    border-left: 5px solid;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.talk-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+.talk-card.filtered {
+    display: none;
+}
+
+.talk-card.category-Development { border-left-color: #3498db; }
+.talk-card.category-AI { border-left-color: #9b59b6; }
+.talk-card.category-Cloud { border-left-color: #1abc9c; }
+.talk-card.category-Frontend { border-left-color: #f1c40f; }
+.talk-card.category-Backend { border-left-color: #e67e22; }
+.talk-card.category-Data { border-left-color: #34495e; }
+.talk-card.category-Design { border-left-color: #e74c3c; }
+
+.lunch-break {
+    background-color: #ecf0f1;
+    border-left-color: #7f8c8d;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.talk-time {
+    font-size: 0.9rem;
+    color: #7f8c8d;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.talk-title {
+    font-size: 1.7rem;
+    color: #2c3e50;
+    margin-top: 0;
+    margin-bottom: 0.8rem;
+}
+
+.talk-speakers {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+}
+
+.talk-category {
+    display: inline-block;
+    background-color: #bdc3c7;
+    color: #fff;
+    padding: 0.3rem 0.6rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    margin-right: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.talk-description {
+    font-size: 1rem;
+    color: #666;
+    margin-top: 1rem;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+    #app {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        flex: 0 0 250px;
+        margin: 1rem 0 1rem 1rem;
+    }
+
+    #schedule {
+        flex: 1;
+        padding: 1rem 1rem 1rem 0;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    }
+}
+
+@media (min-width: 1024px) {
+    #schedule {
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+    }
+}
